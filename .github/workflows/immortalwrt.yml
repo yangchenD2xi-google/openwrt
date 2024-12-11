@@ -112,20 +112,40 @@ jobs:
 
       - name: Display initial disk space
         run: |
+          echo "Initial disk usage:"
           df -h
+          echo "----------------------------"
+          du -h --max-depth=1
+
+      - name: Free up disk space
+        run: |
+          echo "Cleaning up unnecessary files..."
+          sudo apt-get clean
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/llvm-*
+          echo "Disk usage after cleanup:"
+          df -h
+
+      - name: Use temporary storage for build
+        run: |
+          echo "Setting up large build directory in temporary storage..."
+          mkdir -p $RUNNER_TEMP/build_dir
+          ln -s $RUNNER_TEMP/build_dir build_dir
+          echo "Build directory mapped to $RUNNER_TEMP/build_dir"
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: ${{ env.EXTRA_STR }}
+          path: build_dir/${{ env.EXTRA_STR }}
 
       - name: Prepare environments
         env:
-          REQUIREMENTS: ${{ env.EXTRA_STR }}/extra-files/requirements-transit.txt
+          REQUIREMENTS: build_dir/${{ env.EXTRA_STR }}/extra-files/requirements-transit.txt
         run: |
           sudo apt-get update
           sudo apt-get -y install gcc-multilib gettext
-          sudo apt-get clean
           pip3 install -r $REQUIREMENTS
 
       - name: Prepare deployment
@@ -136,9 +156,9 @@ jobs:
           LATEST_TAG: ${{ inputs.latest_tag }}
           LOGIN_IP: ${{ inputs.lan_ipad }}
           LOGIN_PWD: ${{ inputs.login_pwd }}
-          TEMP_PREFIX: ${{ env.EXTRA_STR }}
-          DEPLOY_DIR: ${{ env.EXTRA_STR }}/preset-immortalwrt
-          TRANSIT_PY: ${{ env.EXTRA_STR }}/extra-files/transit.py
+          TEMP_PREFIX: build_dir/${{ env.EXTRA_STR }}
+          DEPLOY_DIR: build_dir/${{ env.EXTRA_STR }}/preset-immortalwrt
+          TRANSIT_PY: build_dir/${{ env.EXTRA_STR }}/extra-files/transit.py
         run: |
           chmod +x $TRANSIT_PY
           $TRANSIT_PY
@@ -148,10 +168,12 @@ jobs:
           CLONE_SH: ${{ steps.prepare-deployment.outputs.clone_sh }}
         run: |
           chmod +x $CLONE_SH
+          cd build_dir
           $CLONE_SH
 
       - name: Update feeds
         run: |
+          cd build_dir
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -194,7 +216,7 @@ jobs:
         env:
           FOR_DEVICE: ${{ steps.prepare-deployment.outputs.fordevice }}
           CODE_DIR: ${{ steps.prepare-deployment.outputs.codedir }}
-          TRANSIT_PY: ${{ env.EXTRA_STR }}/extra-files/transit.py
+          TRANSIT_PY: build_dir/${{ env.EXTRA_STR }}/extra-files/transit.py
         run: |
           chmod +x $TRANSIT_PY
           $TRANSIT_PY
@@ -204,7 +226,7 @@ jobs:
         if: inputs.release
         uses: hugcabbage/next-version@v1
         with:
-          repo_path: ${{ env.EXTRA_STR }}
+          repo_path: build_dir/${{ env.EXTRA_STR }}
 
       - name: Upload firmware to release
         id: to-release
@@ -233,7 +255,9 @@ jobs:
 
       - name: Display finishing disk space
         run: |
+          echo "Final disk usage:"
           df -h
           echo "----------------------------"
           du -h --max-depth=1
+
  
