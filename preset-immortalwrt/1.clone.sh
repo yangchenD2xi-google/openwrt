@@ -25,7 +25,7 @@ SUPPLY_DIR=_supply_packages
 echo "src-link supply $PWD/$SUPPLY_DIR" >> feeds.conf.default
 mkdir $SUPPLY_DIR && cd $SUPPLY_DIR
 git clone --depth 1 https://github.com/haiibo/openwrt-packages.git && mv openwrt-packages/luci-app-poweroff./&& rm -rf openwrt-packages
-git clone --depth 1 https://github.com/haiibo/openwrt-packages.git && mv openwrt-packages/luci-app-ssr-plus./&& rm -rf openwrt-packages
+git clone --depth 1 https://github.com/haiibo/openwrt-packages.git && mv openwrt-packages/luci-app-passwall2./&& rm -rf openwrt-packages
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-ddns./&& rm -rf small-package
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-firewall./&& rm -rf small-package
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-nlbwmon./&& rm -rf small-package
