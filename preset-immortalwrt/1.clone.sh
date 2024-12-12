@@ -33,7 +33,7 @@ git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-pac
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-smartdns./&& rm -rf small-package
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-upnp./&& rm -rf small-package
 git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-ssr-plus./&& rm -rf small-package
-git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-homeproxy./&& rm -rf small-package
+git clone --depth 1 https://github.com/kenzok8/small-package.git && mv small-package/luci-app-passwall2./&& rm -rf small-package
 git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git
 git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git
 git clone --depth 1 https://github.com/kongfl888/luci-app-timedreboot.git
