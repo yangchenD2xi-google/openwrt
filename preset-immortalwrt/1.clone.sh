@@ -38,3 +38,5 @@ git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git
 git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git
 git clone --depth 1 https://github.com/kongfl888/luci-app-timedreboot.git
 git clone --depth 1 https://github.com/chenmozhijin/turboacc.git
+git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone --depth 1 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
